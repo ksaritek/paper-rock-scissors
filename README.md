@@ -4,6 +4,13 @@ Rock, Paper, Scissors is a classic hand game played between two people. Each pla
 
 This project is a simple implementation of the Rock, Paper, Scissors game using gRPC. The game is played against the computer, and the player can choose one of the three shapes. The computer also selects a shape, and the winner is determined based on the rules.
 
+## bullet points
+
+- gRPC server and client application
+- otel for observability
+- buf for proto management
+- onion architecture
+
 ## How to Play
 
 Frist, you need to start the server
