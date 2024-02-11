@@ -5,8 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
+	"github.com/common-nighthawk/go-figure"
 	"github.com/ksaritek/paper-rock-scissors/internal/cmd"
 	pb "github.com/ksaritek/paper-rock-scissors/proto/gen/go/game/v1"
 	"google.golang.org/grpc"
@@ -28,11 +30,15 @@ var (
 )
 
 func main() {
+	initFigure := figure.NewFigure("!! RSPBattle !!", "", true)
+	initFigure.Print()
+
 	addr := flag.String("address", "localhost:50051", "address to connect to")
 	flag.Parse()
 
 	ctx, stop := cmd.AppContext()
 	defer stop()
+	go waitForSignal(ctx)
 
 	fmt.Printf("Connecting to %s\n", *addr)
 	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -90,7 +96,13 @@ outer:
 
 	endGame(ctx, client, session)
 
-	fmt.Println("tot zien!....")
+	byeFigure := figure.NewFigure("tot zien !....", "", true)
+	byeFigure.Print()
+}
+
+func waitForSignal(ctx context.Context) {
+	<-ctx.Done()
+	os.Exit(0)
 }
 
 func endGame(ctx context.Context, client pb.GameServiceClient, session *pb.Session) {

@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/common-nighthawk/go-figure"
 	"github.com/ksaritek/paper-rock-scissors/internal/api"
 	"github.com/ksaritek/paper-rock-scissors/internal/cmd"
 	"github.com/ksaritek/paper-rock-scissors/internal/domain/repository/memory"
@@ -29,6 +30,9 @@ var (
 )
 
 func main() {
+	initFigure := figure.NewFigure("!! Game Server !!", "", true)
+	initFigure.Print()
+
 	port := flag.String("port", "50051", "port to listen")
 	flag.Parse()
 
