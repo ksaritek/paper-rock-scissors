@@ -11,6 +11,10 @@ import (
 
 type ComputerMove func() model.Choice
 
+var (
+	ErrInvalidChoice = errors.New("invalid choice")
+)
+
 func (s *sessionService) Move(ctx context.Context, move model.Move, fn ComputerMove) (_ *model.Session, _ model.Choice, retErr error) {
 	ctx, span := observability.Tracer().Start(ctx, "service_move")
 	defer span.End()
@@ -62,5 +66,5 @@ func determinePlayerResult(playerMove model.Choice, computerMove model.Choice) (
 		}
 	}
 
-	return model.INVALID_RESULT, errors.New("invalid move")
+	return model.INVALID_RESULT, ErrInvalidChoice
 }
