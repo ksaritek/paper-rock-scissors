@@ -9,10 +9,9 @@ This project is a simple implementation of the Rock, Paper, Scissors game using 
 - gRPC server and client application
 - otel for observability
 - buf for proto management
-- onion architecture
-  - loose coupling
-  - high cohesion
-  - inbounds and outbounds
+- loose coupling
+- high cohesion
+- inbounds and outbounds
 - error handling
 - error logging at controller level
 - unit tests
