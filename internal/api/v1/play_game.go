@@ -2,7 +2,6 @@ package v1
 
 import (
 	"context"
-	"math/rand"
 
 	"github.com/ksaritek/paper-rock-scissors/internal/domain/model"
 	"github.com/ksaritek/paper-rock-scissors/internal/observability"
@@ -22,12 +21,12 @@ func (s *controller) PlayGame(ctx context.Context, in *pb.PlayGameRequest) (*pb.
 
 	if err := validateSessionID(sessionId); err != nil {
 		s.logger.Error("invalid session id", zap.Error(err))
-		return nil, err
+		return nil, status.Error(codes.Aborted, "invalid session id")
 	}
 
 	if err := validateMove(playerMove); err != nil {
 		s.logger.Error("invalid player move", zap.Error(err))
-		return nil, err
+		return nil, status.Error(codes.Aborted, "invalid player move")
 	}
 
 	span.SetAttributes(attribute.String("player_move", playerMove.String()))
@@ -39,7 +38,7 @@ func (s *controller) PlayGame(ctx context.Context, in *pb.PlayGameRequest) (*pb.
 		Choice: choice,
 	}
 
-	session, computerMove, err := s.srv.Move(ctx, move, getRandomMove)
+	session, computerMove, err := s.srv.Move(ctx, move)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to play game")
 	}
@@ -54,10 +53,4 @@ func (s *controller) PlayGame(ctx context.Context, in *pb.PlayGameRequest) (*pb.
 			Draws:    int32(session.Draws),
 		},
 	}, nil
-}
-
-func getRandomMove() model.Choice {
-	moves := []model.Choice{model.ROCK, model.PAPER, model.SCISSORS}
-	randomIndex := rand.Intn(len(moves))
-	return moves[randomIndex]
 }

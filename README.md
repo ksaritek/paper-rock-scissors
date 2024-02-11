@@ -10,6 +10,13 @@ This project is a simple implementation of the Rock, Paper, Scissors game using 
 - otel for observability
 - buf for proto management
 - onion architecture
+  - loose coupling
+  - high cohesion
+  - inbounds and outbounds
+- error handling
+- error logging at controller level
+- unit tests
+- makefile for easy commands
 
 ## How to Play
 

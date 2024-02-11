@@ -75,7 +75,7 @@ func main() {
 	grpcServer := cmd.Server(ctx, l)
 
 	repo := memory.NewMemoryStore(ctx, l, time.Minute*10)
-	srv := service.NewSessionService(ctx, repo)
+	srv := service.NewSessionService(ctx, l, service.GenerateSessionID, service.RandomMove, repo)
 	api.Routes(ctx, l, grpcServer, srv)
 
 	defer grpcServer.GracefulStop()

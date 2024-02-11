@@ -9,22 +9,20 @@ import (
 	"github.com/ksaritek/paper-rock-scissors/internal/observability"
 )
 
-type ComputerMove func() model.Choice
-
 var (
 	ErrInvalidChoice = errors.New("invalid choice")
 )
 
-func (s *sessionService) Move(ctx context.Context, move model.Move, fn ComputerMove) (_ *model.Session, _ model.Choice, retErr error) {
+func (s *sessionService) Move(ctx context.Context, move model.Move) (_ *model.Session, _ model.Choice, retErr error) {
 	ctx, span := observability.Tracer().Start(ctx, "service_move")
 	defer span.End()
 	defer observability.RecordErr(span, retErr)
 
-	computerMove := fn()
+	v := s.computerMove()
 
-	playerResult, err := determinePlayerResult(move.Choice, computerMove)
+	playerResult, err := determinePlayerResult(move.Choice, v)
 	if err != nil {
-		return nil, computerMove, errors.WithMessage(err, "failed to determine who wins the round")
+		return nil, v, errors.WithMessage(err, "failed to determine who wins the round")
 	}
 
 	session, err := s.sessionRepo.UpdateRoundResult(ctx, move.Id, playerResult)
@@ -32,7 +30,7 @@ func (s *sessionService) Move(ctx context.Context, move model.Move, fn ComputerM
 		return nil, model.INVALID_CHOICE, errors.WithMessage(err, "failed to update session")
 	}
 
-	return session, computerMove, nil
+	return session, v, nil
 }
 
 func determinePlayerResult(playerMove model.Choice, computerMove model.Choice) (model.RoundResult, error) {

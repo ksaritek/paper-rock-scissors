@@ -15,19 +15,19 @@ func Test_Start_Session(t *testing.T) {
 	ctx := context.Background()
 
 	repo := memory.NewMemoryStore(ctx, logger.NewLogger("debug"), time.Hour)
-
-	service := NewSessionService(context.Background(), repo)
+	l := logger.NewLogger("debug")
+	service := NewSessionService(context.Background(), l, func() string { return "123" }, func() model.Choice { return model.PAPER }, repo)
 
 	playerId := "player1"
 	expectedSession := &model.Session{
 		PlayerId: playerId,
+		Id:       "123",
 		Wins:     0,
 		Losses:   0,
 		Draws:    0,
 	}
 
 	session, err := service.StartSession(ctx, playerId)
-	expectedSession.Id = session.Id
 
 	assert.NoError(t, err)
 
@@ -39,7 +39,8 @@ func Test_Get_Session(t *testing.T) {
 
 	repo := memory.NewMemoryStore(ctx, logger.NewLogger("debug"), time.Hour)
 
-	service := NewSessionService(context.Background(), repo)
+	l := logger.NewLogger("debug")
+	service := NewSessionService(context.Background(), l, func() string { return "123" }, func() model.Choice { return model.PAPER }, repo)
 
 	playerId := "player1"
 	session, err := service.StartSession(ctx, playerId)
@@ -57,8 +58,8 @@ func Test_Delete_Session(t *testing.T) {
 	ctx := context.Background()
 
 	repo := memory.NewMemoryStore(ctx, logger.NewLogger("debug"), time.Hour)
-
-	service := NewSessionService(context.Background(), repo)
+	l := logger.NewLogger("debug")
+	service := NewSessionService(context.Background(), l, func() string { return "123" }, func() model.Choice { return model.PAPER }, repo)
 
 	playerId := "player1"
 	session, err := service.StartSession(ctx, playerId)
@@ -76,8 +77,8 @@ func Test_Move(t *testing.T) {
 	ctx := context.Background()
 
 	repo := memory.NewMemoryStore(ctx, logger.NewLogger("debug"), time.Hour)
-
-	service := NewSessionService(context.Background(), repo)
+	l := logger.NewLogger("debug")
+	service := NewSessionService(context.Background(), l, func() string { return "123" }, func() model.Choice { return model.PAPER }, repo)
 
 	playerId := "player1"
 	session, err := service.StartSession(ctx, playerId)
@@ -89,7 +90,7 @@ func Test_Move(t *testing.T) {
 		Choice: model.PAPER,
 	}
 
-	s, c, err := service.Move(ctx, move, func() model.Choice { return model.PAPER })
+	s, c, err := service.Move(ctx, move)
 	expectedSession := &model.Session{
 		Id:       session.Id,
 		PlayerId: playerId,

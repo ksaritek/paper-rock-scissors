@@ -20,7 +20,7 @@ func (s *controller) StartSession(ctx context.Context, in *pb.StartSessionReques
 	playerId := in.GetPlayerId()
 
 	if strings.TrimSpace(playerId) == "" {
-		playerId = getRandomName()
+		playerId = randomName()
 	}
 
 	session, err := s.srv.StartSession(ctx, playerId)
@@ -39,6 +39,6 @@ func (s *controller) StartSession(ctx context.Context, in *pb.StartSessionReques
 	}}, nil
 }
 
-func getRandomName() string {
+func randomName() string {
 	return looneyTunes[rand.Intn(len(looneyTunes))]
 }

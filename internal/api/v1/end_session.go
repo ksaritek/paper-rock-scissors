@@ -20,7 +20,7 @@ func (s *controller) EndSession(ctx context.Context, in *pb.EndSessionRequest) (
 
 	if err := validateSessionID(sessionId); err != nil {
 		s.logger.Error("invalid session id", zap.Error(err))
-		return nil, err
+		return nil, status.Error(codes.Aborted, "invalid session id")
 	}
 
 	spanAttributes(span, sessionId, player)
