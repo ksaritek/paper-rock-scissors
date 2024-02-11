@@ -11,4 +11,3 @@ import (
 
 //go:embed apidocs.swagger.json
 var ApidocsSwaggerJson []byte
-
