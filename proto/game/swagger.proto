@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package game;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Case Service";
+    version: "1.0";
+    contact: {
+      name: "case project";
+      url: "github.com/ksaritek/paper-rock-scissors";
+      email: "koray.sariteke@trendyol.com";
+    };
+  };
+  external_docs: {
+    url: "github.com/ksaritek/paper-rock-scissors/-/blob/main/README.md";
+    description: "More about case";
+  }
+  schemes: HTTPS;
+  schemes: HTTP;
+  consumes: "application/json";
+  produces: "application/json";
+  responses: {
+    key: "403";
+    value: {description: "Returned when the user does not have permission to access the resource."}
+  }
+  responses: {
+    key: "404";
+    value: {
+      description: "Returned when the resource does not exist.";
+      schema: {
+        json_schema: {type: STRING}
+      }
+    }
+  }
+  responses: {
+    key: "500";
+    value: {description: "Server error"}
+  }
+};

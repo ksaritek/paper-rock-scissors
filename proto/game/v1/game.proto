@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package game.v1;
+
+enum Move {
+  MOVE_UNSPECIFIED = 0;
+  MOVE_ROCK = 1;
+  MOVE_PAPER = 2;
+  MOVE_SCISSORS = 3;
+}
+
+message Session {
+  string id = 1;
+  string player_id = 2;
+  int32 wins = 3;
+  int32 losses = 4;
+  int32 draws = 5;
+}
+
+message PlayGameRequest {
+  string session_id = 1;
+  Move player_move = 2;
+}
+
+message PlayGameResponse {
+  Move computer_move = 1;
+  Session session = 2;
+}
+
+message StartSessionRequest {
+  optional string player_id = 1;
+}
+
+message StartSessionResponse {
+  Session session = 1;
+}
+
+message EndSessionRequest {
+  Session session = 1;
+}
+
+message EndSessionResponse {
+  Session session = 1;
+}

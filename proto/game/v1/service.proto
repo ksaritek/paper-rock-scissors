@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package game.v1;
+
+import "game/v1/game.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+service GameService {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "Game Service"
+    external_docs: {
+      url: "https://github.com/ksaritek/paper-rock-scissors";
+      description: "Find out more about Game Service";
+    }
+  };
+
+  rpc StartSession(game.v1.StartSessionRequest) returns (game.v1.StartSessionResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/game/start-session"
+      body: "*"
+    };
+  }
+
+  rpc PlayGame(game.v1.PlayGameRequest) returns (game.v1.PlayGameResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/game/play-game"
+      body: "*"
+    };
+  }
+
+  rpc EndSession(game.v1.EndSessionRequest) returns (game.v1.EndSessionResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/game/end-session"
+      body: "*"
+    };
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Case Service",
+    "version": "1.0",
+    "contact": {
+      "name": "case project",
+      "url": "github.com/ksaritek/paper-rock-scissors",
+      "email": "koray.sariteke@trendyol.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "game.v1.GameService",
+      "description": "Game Service",
+      "externalDocs": {
+        "description": "Find out more about Game Service",
+        "url": "https://github.com/ksaritek/paper-rock-scissors"
+      }
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/game/end-session": {
+      "post": {
+        "operationId": "GameService_EndSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1EndSessionResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1EndSessionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "game.v1.GameService"
+        ]
+      }
+    },
+    "/api/v1/game/play-game": {
+      "post": {
+        "operationId": "GameService_PlayGame",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PlayGameResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1PlayGameRequest"
+            }
+          }
+        ],
+        "tags": [
+          "game.v1.GameService"
+        ]
+      }
+    },
+    "/api/v1/game/start-session": {
+      "post": {
+        "operationId": "GameService_StartSession",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1StartSessionResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1StartSessionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "game.v1.GameService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1EndSessionRequest": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/v1Session"
+        }
+      }
+    },
+    "v1EndSessionResponse": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/v1Session"
+        }
+      }
+    },
+    "v1Move": {
+      "type": "string",
+      "enum": [
+        "MOVE_UNSPECIFIED",
+        "MOVE_ROCK",
+        "MOVE_PAPER",
+        "MOVE_SCISSORS"
+      ],
+      "default": "MOVE_UNSPECIFIED"
+    },
+    "v1PlayGameRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        },
+        "playerMove": {
+          "$ref": "#/definitions/v1Move"
+        }
+      }
+    },
+    "v1PlayGameResponse": {
+      "type": "object",
+      "properties": {
+        "computerMove": {
+          "$ref": "#/definitions/v1Move"
+        },
+        "session": {
+          "$ref": "#/definitions/v1Session"
+        }
+      }
+    },
+    "v1Session": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "playerId": {
+          "type": "string"
+        },
+        "wins": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "losses": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "draws": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1StartSessionRequest": {
+      "type": "object",
+      "properties": {
+        "playerId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1StartSessionResponse": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/v1Session"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "More about case",
+    "url": "github.com/ksaritek/paper-rock-scissors/-/blob/main/README.md"
+  }
+}
