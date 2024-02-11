@@ -24,3 +24,13 @@ Then, you can play the game by running the client
 ```shell
 $ make grpc-client-run
 ```
+
+## Screenshots
+
+### Server
+
+![grpc-server-run](./assets/server.png)
+
+### Client
+
+![grpc-client-run](./assets/client.png)
